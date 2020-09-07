@@ -18,7 +18,7 @@ client.on('ready', () => {
 client.user.setPresence({
     status: "online",
     game: {
-        name: `Doppel: Become Human`,
+        name: `Doppel Adventure DX: Arle's Cut`,
         type: "PLAYING"
     },
 });
@@ -145,10 +145,27 @@ function DailyDoppel() {
       './images/EY9wbg4WAAAJwj_.jpeg',
       './images/EY9xItPX0AAX5xl.jpeg',
       './images/EYBKzKnXYAMQMyx.jpeg',
-      './images/EYOkvpiU4AAJPVC.jpeg',      
+      './images/EYOkvpiU4AAJPVC.jpeg',
+      './images/your-way-cinnabar-wide-large-doppel-edition.png',
+      './images/Ea81gY4UwAUEclH.jpeg',
+      './images/EaARFfXU0AEABuW.jpeg',
+      './images/EbDTiblU0AAhuu9.jpeg',
+      './images/EbkZeTSU8AIVrAm.jpeg',
+      './images/EbSfb-hVcAAHftX.jpeg',
+      './images/EbxZQz7UYAAycZ3.jpeg',
+      './images/EITkG-eXkAAuH63.jpeg',
+      './images/ETMUfBzUEAA86J8.jpeg',
+      './images/EWIpO-XUYAAd0z9.jpeg',
+      './images/EWnN0iKUwAEyWVw.jpeg',
+      './images/EYXjHIiUYAEbJT6.jpeg',
+      './images/EZlIp5bVcAEAclO.jpeg',
+      './images/EZRaRHQUwAAq60X.jpeg',
+      './images/EcZlA4RU4AAU_J_.jpeg',
+      './images/EeG98MNVAAA9RCy.jpeg',
+      './images/EfIy1ndUcAEQ_5S.jpeg',      
 ];
   const channel = client.channels.get('694943149142966396');
-  channel.send("I hope you're having a great time! Here's your Daily Doppel! :heart:", {
+  channel.send("You know what they say? A Doppel a day keeps your sadness away! Here's your Daily Doppel! :heart:", {
   file: doppel_imgs[Math.floor(Math.random() * doppel_imgs.length)]
 });
 }
