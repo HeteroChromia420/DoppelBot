@@ -1,8 +1,8 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const cron = require("cron");
-const { Client, RichEmbed, Permissions, PermissionOverwrites, GuildMember, } = require('discord.js');
-const config = require('./config.json')
+const { Client, MessageEmbed, Permissions, PermissionOverwrites, GuildMember, } = require('discord.js');
+const config = require('./config.json');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -18,9 +18,8 @@ client.on('ready', () => {
   console.log('I am ready!')
 client.user.setPresence({
     status: "online",
-    game: {
-        name: `Merry Fucking Xmas!`,
-        type: "PLAYING"
+    activity: {
+        name: `Who's Your Doppel?!`,
     },
 });
 function DailyDoppel() {
@@ -41,7 +40,7 @@ function DailyDoppel() {
       ];
       const channel = client.channels.get('694943149142966396');
       channel.send(responses[Math.floor(Math.random() * responses.length)], {
-        file: randomImage
+        files: [randomImage]
       });
 });
 }
@@ -51,7 +50,7 @@ job1.start();
 
 client.on('message', message => {
   if (!message.content.startsWith(config.prefix)) {
-    if (message.isMentioned(client.user)) {
+    if (message.mentions.has(client.user)) {
       const mention_responses = [
         'My relationship with Arle? Can you handle the knowledge?',
         'I look like Arle? Well of course I do... Haha.',
@@ -69,10 +68,38 @@ client.on('message', message => {
       ];
       message.reply(mention_responses[Math.floor(Math.random() * mention_responses.length)]);
     };
-	if((message.content.startsWith("Ahoy")) || (message.content.startsWith("ahoy"))) {
+	if((message.content.toLowerCase().includes("https://discordgift.site/"))) {
+		message.delete();
+	};	
+	if(message.content.toLowerCase().startsWith("ahoy")) {
 		message.reply("Ahoy!");
 	};
-	if(((message.content.startsWith("thanks")) || (message.content.startsWith("Thanks"))) && (message.channel.id === "694943149142966396")) {
+	if(message.content.toLowerCase().startsWith("hold it!")) {
+		message.channel.send({
+        files: ["./ace_attorney/hold_it.jpg"]
+      });
+	};
+	if(message.content.toLowerCase().startsWith("take that!")) {
+		message.channel.send({
+        files: ["./ace_attorney/take_that.jpg"]
+      });
+	};
+	if(message.content.toLowerCase().startsWith("objection!")) {
+		message.channel.send({
+        files: ["./ace_attorney/objection.jpg"]
+      });
+	};
+	if(message.content.toLowerCase().startsWith("gotcha!")) {
+		message.channel.send({
+        files: ["./ace_attorney/gotcha.jpg"]
+      });
+	};
+	if(message.content.toLowerCase().startsWith("Eureka!")) {
+		message.channel.send({
+        files: ["./ace_attorney/eureka.png"]
+      });
+	};	
+	if((message.content.toLowerCase().startsWith("thanks")) && (message.channel.id === "694943149142966396")) {
       const welcome = [
         'all conveniences in the world, just for you!',
         "I'm glad you're enjoying this!",
@@ -93,14 +120,28 @@ message.channel.send('https://www.youtube.com/watch?v=n-hRYCpm8wQ');
   if (!client.commands.has(commandName)) return;
 
   const command = client.commands.get(commandName);
+  
+  if (command.userpermissions) {
+	const perms = message.channel.permissionsFor(message.author);
+ 	if (!perms || !perms.has(command.userpermissions)) {
+ 		return message.reply('you do not have permission to use this command!');
+ 	}
+}
 
 try {
 	command.execute(message, args);
 } catch (error) {
 	console.error(error);
-	message.reply('there was an error trying to execute that command!');
+	console.log(error.code);
+	if (error.code === Discord.Constants.APIErrors.MISSING_PERMISSIONS) {
+		message.reply("I don't have permissions to do that action! Check the Roles page!");
+	} else message.reply('there was an error trying to execute that command!');
 }
 
 });
 
-client.login(process.env.bot_token);
+process.on('unhandledRejection', error => {
+	console.error('Error:', error);
+});
+
+client.login();
