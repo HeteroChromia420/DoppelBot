@@ -28,6 +28,8 @@ module.exports = {
             connection.channel.leave();
 	        console.log('Music has finished playing!');
         });
+
+        // Always remember to handle errors appropriately!
         dispatcher.on('error', console.error);
     }
 	},
