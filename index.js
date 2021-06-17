@@ -13,7 +13,7 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-
+const responses = JSON.parse(fs.readFileSync('./responses.json'));
 
 client.on('ready', () => {
   console.log('I am ready!')
@@ -86,13 +86,9 @@ function DailyDoppel() {
 
       let randomIndex = Math.floor(Math.random() * doppel_imgs.length);
       let randomImage = './images/' + doppel_imgs[randomIndex];
-      let responses = [
-        "You earned a Daily Doppel! Congrats!",
-        "What is it?! A Daily Doppel?!",
-        "Prepare for trouble! And make it Doppel! No idea what that was, but here's your Doppel image.",
-      ];
+      let ddmessage = responses.dd_responses;
       const channel = client.channels.cache.get('694943149142966396');
-      channel.send(responses[Math.floor(Math.random() * responses.length)], {
+      channel.send(ddmessage[Math.floor(Math.random() * ddmessage.length)], {
         files: [randomImage]
       });
 });
@@ -141,6 +137,15 @@ client.on('guildDelete', guild => {
 	console.log('Removing filter...')});
 });
 
+client.on('guildMemberAdd', member => {
+	console.log(member);
+	console.log(member.user.username);
+	const name = member.user.username;
+	if ((name.toLowerCase().includes("twitter.com/h0nde")) || (name.toLowerCase().includes("h0nda"))) {
+		member.guild.members.ban(member, {reason: "Spambot"})
+	}
+});
+
 client.on('message', message => {
 	if (!message.guild) return;
 	id = message.guild.id;
@@ -152,21 +157,7 @@ client.on('message', message => {
 	const guildconf = JSON.parse(fs.readFileSync('./guilds/' + id + '.json'));
 	if (guildconf.mentions == "inactive") return;
 	if(message.author.bot) return;
-      const mention_responses = [
-        'My relationship with Arle? Can you handle the knowledge?',
-        'I look like Arle? Well of course I do... Haha.',
-        'Now...take me to more fun places.',
-        'Hahaha... You look surprised. Something wrong?',
-        "Ahahaha! I'm having such a great time.",
-        "It feels like I've become stronger. I have to thank you.",
-        "Defeating me... i'll teach you just what that means!",
-        "Hah... what a pointless question... I'm Arle! ...I'm not anything besides that!!",
-	      "Today you will definitely acknowledge me... Ahahaha!",
-        "No matter how you might want to deny it, the truth remains... that I am what I am...",
-        "Is the Arle that you know really Arle, I wonder? Fufufu...",
-        "Tell me, are you obligated to prove that you really are yourself? ...Well neither am I.",
-        "You get it now, right? There's no need for two Arles...",
-      ];
+      const mention_responses = responses.mention_responses;
       message.reply(mention_responses[Math.floor(Math.random() * mention_responses.length)]);
     };
 	if (filter.banned_words.some(item => message.content.toLowerCase().includes(item))) {
@@ -180,28 +171,12 @@ client.on('message', message => {
 	if (guildconf.other == "inactive") return;
 		message.reply("Ahoy!");
 	};
-	if(message.content.toLowerCase().startsWith("buttontest")) {
-		if(message.author.bot) return;
-		let button = new disbut.MessageButton()
-  		.setStyle('red') //default: blurple
-  		.setLabel('My First Button!') //default: NO_LABEL_PROVIDED
-  		.setID('click_to_function') //note: if you use the style "url" you must provide url using .setURL('https://example.com')
-		message.reply('Hey, i am powered by https://npmjs.com/discord-buttons', button);
-	};
 	if(message.content.toLowerCase().includes("realtek")) {
 		if(message.author.bot) return;
 	const guildconf = JSON.parse(fs.readFileSync('./guilds/' + id + '.json'));
 	if (guildconf.other == "inactive") return;
-		const realkek = [
-        'Realtek - offering shitty products since 1987!',
-        'Did you mean... Realkek?',
-        'Realtek - more like Real Pain.',
-        'Welcome to the Realtek Mode. Enjoy!',
-        "*Message not found. Realtek ate it.*",
-        "I'm not happy about Realtek as well.",
-        "It took me a lot of effort to read this, y'know.",			
-      ];
-      message.channel.send(realkek[Math.floor(Math.random() * realkek.length)]);
+		const realtek_responses = responses.realkek;
+      message.channel.send(realtek_responses[Math.floor(Math.random() * realtek_responses.length)]);
 	};	
 	if(message.content.toLowerCase().startsWith("hold it!")) {
 	const guildconf = JSON.parse(fs.readFileSync('./guilds/' + id + '.json'));
