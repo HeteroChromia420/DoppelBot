@@ -16,6 +16,7 @@ module.exports = {
 	.addField('**Other responses**', guildconf.other)
 	.addField('**Guild prefix**', guildconf.prefix)
 	.addField('**Word filter**', guildconf.filter)
+	.addField('**Global Bans**', guildconf.global_bans)	
     message.channel.send(settings);
 	},
 };

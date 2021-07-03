@@ -20,7 +20,7 @@ client.on('ready', () => {
 client.user.setPresence({
     status: "online",
     activity: {
-        name: `Super Sonic Maker`,
+        name: `Doppel Doppel Literature Club`,
     },
 });
 function createConfig() {
@@ -34,7 +34,8 @@ function createConfig() {
 		stream.write(`"mentions": "active",\n`);
 		stream.write(`"other": "inactive",\n`);
 		stream.write(`"prefix": "d!",\n`);
-		stream.write(`"filter": "active"\n`);
+		stream.write(`"filter": "active",\n`);
+		stream.write(`"global_bans": "active"\n`);		
 		stream.write("}");
 		stream.end();
 });
@@ -52,29 +53,7 @@ function createConfig() {
 		}
 		})
 }); 
-	};
-	fs.access('./database/blacklist.json', (err) => {
-		if (err) {
-		var stream = fs.createWriteStream('./database/blacklist.json');
-		stream.once('open', (fd) => {
-		stream.write("{\n");
-		stream.write(`"blacklist": []\n`);
-		stream.write("}");
-		stream.end();
-});
-		}
-		})
-	fs.access('./database/whitelist.json', (err) => {
-		if (err) {
-		var stream = fs.createWriteStream('./database/whitelist.json');
-		stream.once('open', (fd) => {
-		stream.write("{\n");
-		stream.write(`"whitelist": []\n`);
-		stream.write("}");
-		stream.end();
-});
-		}
-		})		
+	};	
 function DailyDoppel() {
   const imageFolder = "./images/";
 
@@ -88,9 +67,11 @@ function DailyDoppel() {
       let randomImage = './images/' + doppel_imgs[randomIndex];
       let ddmessage = responses.dd_responses;
       const channel = client.channels.cache.get('694943149142966396');
-      channel.send(ddmessage[Math.floor(Math.random() * ddmessage.length)], {
-        files: [randomImage]
-      });
+	  const doppelembed = new Discord.MessageEmbed()
+		.setTitle(ddmessage[Math.floor(Math.random() * ddmessage.length)])
+		.attachFiles([randomImage])
+		.setImage('attachment://' + doppel_imgs[randomIndex]);
+		channel.send(doppelembed);
 });
 }
 let job1 = new cron.CronJob('00 00 13 * * *', DailyDoppel);
@@ -109,7 +90,8 @@ function createConfig() {
 		stream.write(`"mentions": "active",\n`);
 		stream.write(`"other": "inactive",\n`);
 		stream.write(`"prefix": "d!",\n`);
-		stream.write(`"filter": "active"\n`);	
+		stream.write(`"filter": "active",\n`);
+		stream.write(`"global_bans": "active"\n`);		
 		stream.write("}");
 		stream.end();
 });
@@ -262,4 +244,4 @@ process.on('unhandledRejection', error => {
 	console.error('Error:', error);
 });
 
-client.login("");
+client.login("NjAxNDU0OTczMTU4NDI0NTg1.XTCimA.m7XGLwNBRorrpje-M60mR8EgfcE");

@@ -16,7 +16,8 @@ module.exports = {
 		stream.write(`"mentions": "` + guildconf.mentions +`",\n`);
 		stream.write(`"other": "` + guildconf.other +`",\n`);
 		stream.write(`"prefix": "` + guildconf.prefix +`",\n`);
-		stream.write(`"filter": "active"\n`);
+		stream.write(`"filter": "active",\n`);
+		stream.write(`"global_bans": "` + guildconf.global_bans +`"\n`);		
 		stream.write("}");
 		stream.end();
 });
@@ -31,7 +32,8 @@ module.exports = {
 		stream.write(`"mentions": "` + guildconf.mentions +`",\n`);
 		stream.write(`"other": "` + guildconf.other +`",\n`);
 		stream.write(`"prefix": "` + guildconf.prefix +`",\n`);
-		stream.write(`"filter": "inactive"\n`);		
+		stream.write(`"filter": "inactive",\n`);
+		stream.write(`"global_bans": "` + guildconf.global_bans +`"\n`);		
 		stream.write("}");
 		stream.end();
 });

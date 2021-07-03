@@ -10,7 +10,7 @@ module.exports = {
 		if (args.length === 1) {
 			return message.channel.send(`Provide a reason!`)
 		}
-		const user = message.mentions.users.first() || message.guild.members.get(args[0]);
+		const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
 		if (!message.guild.member(user).bannable) return message.reply("I don't have permissions to do that action! Check the Roles page!");
 		var reason = "";
             for(i = 1; i < args.length; i++){

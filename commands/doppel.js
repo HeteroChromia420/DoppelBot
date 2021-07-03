@@ -16,10 +16,13 @@ module.exports = {
       let randomIndex = Math.floor(Math.random() * doppel_imgs.length);
       let randomImage = './images/' + doppel_imgs[randomIndex];
       let doppelmsg = responses.doppel_responses;
+	  
+	  const doppelembed = new Discord.MessageEmbed()
+			.setTitle(doppelmsg[Math.floor(Math.random() * doppelmsg.length)])
+			.attachFiles([randomImage])
+			.setImage('attachment://' + doppel_imgs[randomIndex]);
 
-      message.channel.send(doppelmsg[Math.floor(Math.random() * doppelmsg.length)], {
-        files: [randomImage]
-      });
+		message.channel.send(doppelembed);
           message.delete().catch();
   });
 

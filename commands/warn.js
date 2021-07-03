@@ -10,7 +10,7 @@ module.exports = {
 		if (args.length === 1) {
 			return message.channel.send(`Provide a reason!`)
 		}
-		const user = message.mentions.users.first() || message.guild.members.get(args[0]);
+		const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
 		var reason = "";
             for(i = 1; i < args.length; i++){
                 var arg = args[i] + " "; 
