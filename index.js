@@ -244,4 +244,4 @@ process.on('unhandledRejection', error => {
 	console.error('Error:', error);
 });
 
-client.login("NjAxNDU0OTczMTU4NDI0NTg1.XTCimA.m7XGLwNBRorrpje-M60mR8EgfcE");
+client.login("");
