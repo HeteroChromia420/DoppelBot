@@ -1,0 +1,22 @@
+{
+  "name": "doppel_new",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/voice": "^0.5.5",
+    "avconv": "^3.1.0",
+    "cron": "^1.8.2",
+    "discord.js": "^13.0.0",
+    "ffmpeg": "^0.0.4",
+    "ffmpeg-static": "^4.4.0",
+    "libsodium-wrappers": "^0.7.9",
+    "opusscript": "^0.0.8",
+    "play-dl": "^1.1.7"
+  }
+}
