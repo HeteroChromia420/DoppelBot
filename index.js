@@ -15,7 +15,12 @@ for (const file of commandFiles) {
 const responses = JSON.parse(fs.readFileSync('./responses.json'));
 
 client.on('ready', () => {
-  console.log('I am ready!')
+  console.log('I am ready!');
+function gamecycle() {
+	var games = ["Formula Doppel","Doppel Doppel Literature Club Plus","LEGO Puyo Puyo: The Video Game","Doppel Adventure DX","Doppelganger Arle: Ace Attorney","Super Arle Sisters","Microsoft Doppel Simulator X: Arle Edition","doppel&box","Hearts of Arle IV","Doppel's Mod","Doppel's Schoolhouse (Featuring Sonic The Hedgehog)"]
+	var gamestring = Math.floor(Math.random() * games.length);
+	client.user.setActivity(games[gamestring]);
+}	
 function createConfig() {
 	client.guilds.cache.forEach(g => {
 		fs.access('./guilds/' + g.id + '.json', (err) => {
@@ -45,6 +50,17 @@ function createConfig() {
 });
 		}
 		})
+		fs.access('./filter/scamlist.json', (err) => {
+		if (err) {
+		var stream = fs.createWriteStream('./filter/scamlist.json');
+		stream.once('open', (fd) => {
+		stream.write("{\n");
+		stream.write(`"banned_links": ["https://discordgift.site/"]\n`);	
+		stream.write("}");
+		stream.end();
+});
+		}
+		})		
 }); 
 	};	
 function DailyDoppel() {
@@ -69,7 +85,10 @@ function DailyDoppel() {
 }
 let job1 = new cron.CronJob('00 00 13 * * *', DailyDoppel);
 job1.start();
+let job2 = new cron.CronJob('00 00 * * * *', gamecycle);
+job2.start();
 createConfig();
+gamecycle();
 });
 
 client.on('guildCreate', guild => {
@@ -112,20 +131,12 @@ client.on('guildDelete', guild => {
 	console.log('Removing filter...')});
 });
 
-client.on('guildMemberAdd', member => {
-	console.log(member);
-	console.log(member.user.username);
-	const name = member.user.username;
-	if ((name.toLowerCase().includes("twitter.com/h0nde")) || (name.toLowerCase().includes("h0nda"))) {
-		member.guild.members.ban(member, {reason: "Spambot"})
-	}
-});
-
 client.on('messageCreate', message => {
 	if (!message.guild) return;
 	id = message.guild.id;
 	const guildconf = JSON.parse(fs.readFileSync('./guilds/' + id + '.json'));
 	const filter = JSON.parse(fs.readFileSync('./filter/' + id + '.json'));
+	const scamfilter = JSON.parse(fs.readFileSync('./filter/scamlist.json'));
   if (!message.content.startsWith(guildconf.prefix)) {
 	  id = message.guild.id;
     if (message.content.toLowerCase().includes("<@!601454973158424585>")) {
@@ -140,6 +151,11 @@ client.on('messageCreate', message => {
 		if (guildconf.filter == "inactive") return;
 		message.delete().catch();
 		};
+	if (scamfilter.banned_links.some(item => message.content.toLowerCase().includes(item))) {
+		if(message.author.bot) return;
+		message.delete().catch();
+		message.guild.members.ban(message.author, {reason: "Scammer"});
+		};		
 	if(message.content.toLowerCase().startsWith("ahoy")) {
 		if(message.author.bot) return;
 	const guildconf = JSON.parse(fs.readFileSync('./guilds/' + id + '.json'));
@@ -190,9 +206,9 @@ client.on('messageCreate', message => {
 	};	
 	if((message.content.toLowerCase().startsWith("thanks")) && (message.channel.id === "694943149142966396")) {
       const welcome = [
-        'all conveniences in the world, just for you!',
+        'All conveniences in the world, just for you!',
         "I'm glad you're enjoying this!",
-        "you're welcome!",
+        "You're welcome!",
       ];
       message.reply(welcome[Math.floor(Math.random() * welcome.length)]);
 	} else return;
@@ -204,9 +220,9 @@ client.on('messageCreate', message => {
 
   const args = message.content.slice(guildconf.prefix.length).split(' ');
   const commandName = args.shift().toLowerCase();
-  if (!client.commands.has(commandName)) return;
+	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-  const command = client.commands.get(commandName); 
+	if (!command) return;
   
   if (command.userpermissions) {
 	const perms = message.channel.permissionsFor(message.author);
